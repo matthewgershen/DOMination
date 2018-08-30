@@ -61,6 +61,54 @@ class DOMNodeCollection {
     }
   }
 
+  attr(attrName, attrValue){
+    if ( attrValue ) {
+      this.htmlElements.forEach((el) => {
+        el.setAttribute(attrName, attrValue);
+      });
+    } else {
+        return this.htmlElements[0].getAttribute(attrName);
+    }
+  }
+
+  children() {
+    let kids = [];
+
+    this.htmlElements.forEach((el) => {
+      kids = kids.concat(Array.from(el.children));
+    });
+
+    return new DOMNodeCollection(kids);
+  }
+
+  parent() {
+    let bananas = [];
+    // debugger
+    this.htmlElements.forEach((el) => {
+      bananas = bananas.concat([el.parentElement]);
+    });
+
+    let uniqueParents = Array.from(new Set(bananas));
+    return new DOMNodeCollection(uniqueParents);
+  }
+
+  find(selector) {
+    let bananas = [];
+    // debugger
+    this.htmlElements.forEach((el) => {
+      bananas = bananas.concat(Array.from(el.querySelectorAll(selector)));
+    });
+    return new DOMNodeCollection(bananas);
+  }
+
+  remove() {
+    this.htmlElements.forEach((el) => {
+      el.remove();
+    });
+    this.htmlElement = [];
+  }
+
+
 }
 
 
