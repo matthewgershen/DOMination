@@ -108,6 +108,27 @@ class DOMNodeCollection {
     this.htmlElement = [];
   }
 
+  on(type,callback){
+    this.htmlElements.forEach( (el) => {
+      el.addEventListener(type,callback);
+      if (!el.event) {
+        el.event = [callback];
+      } else {
+        el.event.concat([callback]);
+      }
+
+    });
+  }
+
+  off(type){
+    this.htmlElements.forEach( (el) => {
+      el.event.forEach((ev) => {
+        el.removeEventListener(type, ev);
+        el.event = [];
+      });
+    });
+  }
+
 
 }
 
