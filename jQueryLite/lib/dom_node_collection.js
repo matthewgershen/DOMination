@@ -19,15 +19,44 @@ class DOMNodeCollection {
     this.html("");
   }
 
-  append(object) {
+  append(appendix) {
     let appendString = "";
-    if ( object instanceof String) {
-      appendString = object;
-    } else if ( object instanceof HTMLElement) {
-      appendString = object.outerHTML;
+    if ( typeof appendix === "string") {
+      appendString = appendix;
+    } else if ( appendix instanceof HTMLElement) {
+      appendString = appendix.outerHTML;
     } else {
-      object.forEach( (el) => {
+      appendix.htmlElements.forEach( (el) => {
         appendString += el.outerHTML;
+      });
+    }
+
+    this.htmlElements.forEach( (el) => {
+      el.innerHTML += appendString;
+    });
+  }
+
+  addClass(className) {
+
+    let classes = className.split(" ");
+
+    classes.forEach( (name) =>{
+      this.htmlElements.forEach((el) => {
+        el.classList.add(name);
+      });
+    });
+
+  }
+
+  removeClass(classNames) {
+
+    if (classNames) {
+      this.htmlElements.forEach((el) => {
+        el.classList.remove(classNames);
+      });
+    } else {
+      this.htmlElements.forEach((el) => {
+        el.removeAttribute("class");
       });
     }
   }
