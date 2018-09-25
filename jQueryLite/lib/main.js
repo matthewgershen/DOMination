@@ -36,3 +36,34 @@ $l.extend = (first_obj,...args) => {
   });
   return first_obj;
 };
+
+$l.ajax = (options_obj) => {
+  const default_obj = {
+    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+    data: {},
+    method: 'GET',
+    url: "",
+    error: ()=>{},
+    success: ()=>{}
+  };
+
+  $l.extend(options_obj, default_obj);
+
+  const xhr = new XMLHttpRequest();
+  xhr.open(options_obj.method, options_obj.url);
+
+  xhr.onload = function(){
+    if (xhr.status === 200) {
+      options_obj.success(xhr.response);
+    } else {
+      options_obj.error(xhr.response);
+    }
+    console.log(xhr.status);
+    console.log(xhr.responseType);
+    console.log(xhr.response);
+  };
+
+
+  const optionalData = options_obj.data;
+  xhr.send(optionalData);
+};
